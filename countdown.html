@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Countdown</title>
+  <style>
+    /* Reset */
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Arial', sans-serif;
+    }
+
+    /* Romantic Container */
+    .romantic-container {
+      position: relative;
+      height: 100%;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(to bottom right, #ff9a9e, #fad0c4);
+      overflow: hidden;
+    }
+
+    /* Countdown */
+    .countdown {
+      position: relative;
+      text-align: center;
+      color: white;
+      z-index: 2;
+    }
+
+    .countdown h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .countdown p {
+      font-size: 2.5rem;
+      font-weight: bold;
+      background: rgba(0, 0, 0, 0.548);
+      padding: 10px 20px;
+      border-radius: 10px;
+      display: inline-block;
+    }
+
+    /* Hearts Animation */
+    .hearts {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .hearts::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 200%;
+      height: 200%;
+      background-image: url('https://cdn-icons-png.flaticon.com/512/1077/1077035.png'); /* Heart icon */
+      background-size: 50px 50px;
+      background-repeat: repeat;
+      opacity: 0.3;
+      animation: moveHearts 15s linear infinite;
+    }
+
+    @keyframes moveHearts {
+      0% {
+        transform: translateY(0);
+      }
+      100% {
+        transform: translateY(-100%);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="romantic-container">
+    <div class="hearts"></div>
+    <div class="countdown">
+      <h1>Our Special Moment</h1>
+      <p id="timer">00:00:00</p>
+    </div>
+  </div>
+
+  <script>
+    // Countdown logic
+    const targetDate = new Date("2024-12-13T00:00:00"); // December 13th, 12:00 AM
+    const timerElement = document.getElementById('timer');
+
+    function updateCountdown() {
+      const now = new Date();
+      const difference = targetDate - now;
+
+      if (difference > 0) {
+        const days = String(Math.floor(difference / (1000 * 60 * 60 * 24))).padStart(2, '0');
+        const hours = String(Math.floor((difference / (1000 * 60 * 60)) % 24)).padStart(2, '0');
+        const minutes = String(Math.floor((difference / (1000 * 60)) % 60)).padStart(2, '0');
+        const seconds = String(Math.floor((difference / 1000) % 60)).padStart(2, '0');
+        timerElement.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+      } else {
+        timerElement.textContent = "Time's up!";
+        clearInterval(timerInterval); // Stop the timer
+        window.location.href = "index.html"; // Redirect to index.html
+      }
+    }
+
+    const timerInterval = setInterval(updateCountdown, 1000);
+    const audio = new Audio("music.mp3");
+  audio.loop = true;
+  audio.play().catch(err => console.error("Playback blocked:", err));
+
+  // Save the current time of the audio before redirection
+  setTimeout(() => {
+    localStorage.setItem("songTime", audio.currentTime);
+    window.location.href = "index.html";
+  }, 5000); 
+
+  </script>
+</body>
+</html>
