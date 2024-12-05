@@ -9,6 +9,15 @@
     // Event listener for click
     document.addEventListener('click', playSong);
     document.addEventListener('touchstart', playSong);
+
+if (sessionStorage.getItem('refreshed')) {
+  // If the page was refreshed, redirect to index.html
+  window.location.href = 'index.html';
+} else {
+  // Mark that the page has been refreshed
+  sessionStorage.setItem('refreshed', 'true');
+}
+
     
 let highestZ = 1;
 
